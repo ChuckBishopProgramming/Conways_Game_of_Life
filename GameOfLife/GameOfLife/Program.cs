@@ -5,7 +5,7 @@
 
 public class Program
 {
-    static string[,] grid = new string[30, 120];
+    public static string[,] grid = new string[30, 120];
 
     const string HEADER = "CONWAY'S GAME OF LIFE";
     const string fillingDead = ".";
@@ -14,18 +14,21 @@ public class Program
     {
         Console.WriteLine("It's Alive!!!!");
 
-
         //FILL GRID W DEAD CELLS
+        //++++++++++++++++++++++++++++++++++
         Fill(fillingDead);
 
         //PROMPT FOR CELL #
+        //++++++++++++++++++++++++++++++++++
         int noOfCells = PromptForCellNumber();
+                
         LoopForCells(noOfCells);
         ConsoleReset();
-        Print(grid);
+        Print(grid);        
     }
 
     //CORE MECHANICS
+    //++++++++++++++++++++++++++++++++++
     static public void LoopForCells(int numberOfCells)
     {
         for (int i = 0; i < numberOfCells; i++)
@@ -55,15 +58,15 @@ public class Program
             }
         }
     }
-
     //MECHANICAL HELPERS
+    //++++++++++++++++++++++++++++++++++
     static public void ConsoleReset()
     {
         Console.Clear();
         Console.WriteLine(HEADER);
     }
-
     //DISPLAY
+    //++++++++++++++++++++++++++++++++++
     static public void Print(string[,] grid)
     {
         for (int i = 0; i < grid.GetLength(0); i++)
@@ -75,7 +78,9 @@ public class Program
             Console.Write("\n");
         }
     }
+
     //PROMPT
+    //++++++++++++++++++++++++++++++++++
     static public void CellFilled()
     {
         Console.WriteLine("That cell was already activated, please pick another. Press Enter to Continue");
