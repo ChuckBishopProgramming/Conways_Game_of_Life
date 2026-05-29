@@ -7,28 +7,19 @@ public class Program
     static string[,] grid = new string[30, 120];
 
     const string HEADER = "CONWAY'S GAME OF LIFE";
+    const string fillingDead = ".";
+    const string fillingAlive = "O";
     static void Main(string[] args)
     {
         Console.WriteLine("It's Alive!!!!");
 
-        string fillingDead = ".";
-        string fillingAlive = "O";
-
+        
         //FILL GRID W DEAD CELLS
         Fill(fillingDead);
 
         //PROMPT FOR CELL #
         int noOfCells = PromptForCellNumber();
-
-
-        //loop number of cells times, 
-
-        //$"\nPlease enter a valid number"
-        int x = GetXPos();
-        int y = GetYPos();
-
-        grid[x-1, y-1] = fillingAlive;
-
+        LoopForCells(noOfCells);
         ConsoleReset();
         Print(grid);
     }
@@ -85,10 +76,10 @@ public class Program
         return number;
     }
 
-    static public int GetXPos()
+    static public int GetXPos(int cellNo)
     {
-        string startingPosPrompt = "Please enter the x position for your first cell:";
-        string startingPosFPrompt = "\nPlease enter a valid number between 1 and 30";
+        string startingPosPrompt = $"Please enter the x position for cell number {cellNo}: (1 to 30)";
+        string startingPosFPrompt = "\nPlease enter a valid number";
 
         int maxLength = startingPosPrompt.Length + startingPosFPrompt.Length;
         int xPos = 0;
@@ -105,10 +96,10 @@ public class Program
         }
         return xPos;
     }
-    static public int GetYPos()
+    static public int GetYPos(int cellNo)
     {
-        string startingPosPrompt = "Please enter the y position for your first cell:";
-        string startingPosFPrompt = "\nPlease enter a valid number between 1 and 120";
+        string startingPosPrompt = $"Please enter the y position for cell number {cellNo} (1 to 120):";
+        string startingPosFPrompt = "\nPlease enter a valid number";
 
         int maxLength = startingPosPrompt.Length + startingPosFPrompt.Length;
         int yPos = 0;
@@ -138,6 +129,30 @@ public class Program
             userInputValidNumber = int.TryParse(userInput, out number);            
         }
         return number;
+    }
+    static public void LoopForCells(int numberOfCells)
+    {
+        for ( int i = 0; i < numberOfCells; i++)
+        {
+
+            int x = GetXPos(i+1);
+            int y = GetYPos(i+1);
+
+            if (grid[x - 1, y - 1] == fillingAlive)
+            {
+                CellFilled();
+                i--;
+            }
+            else
+            {
+                grid[x - 1, y - 1] = fillingAlive;
+            }
+        }
+    }
+    static public void CellFilled()
+    {
+        Console.WriteLine("That cell was already activated, please pick another. Press Enter to Continue");
+        Console.ReadKey();
     }
 }
 
