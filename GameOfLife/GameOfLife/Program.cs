@@ -1,6 +1,7 @@
 ﻿//create a grid
 //get starting input
 //validate starting input
+//
 
 public class Program
 {    
@@ -75,7 +76,6 @@ public class Program
 
         return number;
     }
-
     static public int GetXPos(int cellNo)
     {
         string startingPosPrompt = $"Please enter the x position for cell number {cellNo}: (1 to 30)";
