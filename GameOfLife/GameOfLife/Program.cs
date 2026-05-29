@@ -14,47 +14,16 @@ public class Program
         string fillingDead = ".";
         string fillingAlive = "O";
 
-        //fill grid with dead cells
+        //FILL GRID W DEAD CELLS
         Fill(fillingDead);
 
-        bool userInputValidNumber = false;
+        //$"\nPlease enter a valid number"
 
+        string startingPosPrompt = "Please enter some starting positions:";
+        string startingPosFPrompt = "\nPlease enter a valid number";
+        int maxLength = 68; 
+        GetNumberFromUser(startingPosPrompt, startingPosFPrompt, maxLength);
 
-        while (!userInputValidNumber)
-        {
-            string msg = "Please enter some starting positions:";            
-
-            do
-            {
-                if (msg.Length > 68)
-                {
-                    msg = "Please enter some starting positions: \nPlease enter a valid number";
-                }
-
-                ConsoleReset();
-
-                Console.WriteLine(msg);
-
-                string userInput = Console.ReadLine();
-
-                userInputValidNumber = int.TryParse(userInput, out int number);
-
-                msg += $"\nPlease enter a valid number";
-            }
-            while (!userInputValidNumber);
-            
-            
-
-            //ConsoleReset();
-            //Console.WriteLine("Please enter some starting positions:");
-            //string userInput = Console.ReadLine();
-            //userInputValidNumber = int.TryParse(userInput, out int number);  
-
-            //if (!userInputValidNumber)
-            //{
-            //    Console.WriteLine("Please enter a valid number");
-            //}
-        }
 
         grid[5, 10] = fillingAlive;
         grid[5, 11] = fillingAlive;
@@ -84,11 +53,37 @@ public class Program
             Console.Write("\n");
         }
     }
-
     static public void ConsoleReset()
     {
         Console.Clear();
         Console.WriteLine(HEADER);
+    }
+    static public int GetNumberFromUser(string prompt, string failPrompt, int failPromptLength)
+    {
+        bool userInputValidNumber = false;
+        int number = 0;
+        string msg = prompt;
+
+        while (!userInputValidNumber)
+        {           
+            if (msg.Length > failPromptLength)
+            {
+                msg = prompt + failPrompt;
+            }
+
+            ConsoleReset();
+
+            Console.WriteLine(msg);
+
+            string userInput = Console.ReadLine();
+
+            userInputValidNumber = int.TryParse(userInput, out number);
+
+            msg += failPrompt;
+
+        }
+
+        return number;
     }
 }
 
