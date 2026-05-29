@@ -3,10 +3,10 @@
 //validate starting input
 
 public class Program
-{
+{    
     static string[,] grid = new string[30, 120];
 
-    const string HEADER = "HEADER GOES HERE";
+    const string HEADER = "CONWAY'S GAME OF LIFE";
     static void Main(string[] args)
     {
         Console.WriteLine("It's Alive!!!!");
@@ -17,17 +17,17 @@ public class Program
         //FILL GRID W DEAD CELLS
         Fill(fillingDead);
 
+        //PROMPT FOR CELL #
+        int noOfCells = PromptForCellNumber();
+
+
+        //loop number of cells times, 
+
         //$"\nPlease enter a valid number"
+        int x = GetXPos();
+        int y = GetYPos();
 
-        string startingPosPrompt = "Please enter some starting positions:";
-        string startingPosFPrompt = "\nPlease enter a valid number";
-        int maxLength = 68; 
-        GetNumberFromUser(startingPosPrompt, startingPosFPrompt, maxLength);
-
-
-        grid[5, 10] = fillingAlive;
-        grid[5, 11] = fillingAlive;
-        grid[5, 12] = fillingAlive;
+        grid[x-1, y-1] = fillingAlive;
 
         ConsoleReset();
         Print(grid);
@@ -80,9 +80,63 @@ public class Program
             userInputValidNumber = int.TryParse(userInput, out number);
 
             msg += failPrompt;
-
         }
 
+        return number;
+    }
+
+    static public int GetXPos()
+    {
+        string startingPosPrompt = "Please enter the x position for your first cell:";
+        string startingPosFPrompt = "\nPlease enter a valid number between 1 and 30";
+
+        int maxLength = startingPosPrompt.Length + startingPosFPrompt.Length;
+        int xPos = 0;
+
+        bool xPosValid = false;
+
+        while (!xPosValid)
+        {
+            xPos = GetNumberFromUser(startingPosPrompt, startingPosFPrompt, maxLength);
+            if (!(xPos < 1 || xPos > 30))
+            {
+                xPosValid = true;
+            }
+        }
+        return xPos;
+    }
+    static public int GetYPos()
+    {
+        string startingPosPrompt = "Please enter the y position for your first cell:";
+        string startingPosFPrompt = "\nPlease enter a valid number between 1 and 120";
+
+        int maxLength = startingPosPrompt.Length + startingPosFPrompt.Length;
+        int yPos = 0;
+
+        bool yPosValid = false;
+
+        while (!yPosValid)
+        {
+            yPos = GetNumberFromUser(startingPosPrompt, startingPosFPrompt, maxLength);
+            if (!(yPos < 1 || yPos > 120))
+            {
+                yPosValid = true;
+            }
+        }
+        return yPos;
+    }
+    static public int PromptForCellNumber()
+    {
+        bool userInputValidNumber = false;
+        int number = 0;
+
+        while (!userInputValidNumber)
+        {
+            Console.WriteLine("How many cells do you want to place in total?");
+            string userInput = Console.ReadLine();
+
+            userInputValidNumber = int.TryParse(userInput, out number);            
+        }
         return number;
     }
 }
