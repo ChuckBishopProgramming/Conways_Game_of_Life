@@ -40,8 +40,8 @@ public class Program
         PrintArray(Storage.initialX);
 
         //GET NEIGHBOR COUNT
-        //int neighborCount = Neighbors.GetNeighborCount(grid, Storage.initialX, Storage.initialY);
-        //Console.WriteLine(neighborCount);
+        int neighborCount = Neighbors.GetNeighborCount(grid, Storage.initialX, Storage.initialY);
+        Console.WriteLine(neighborCount);
     }
 
     //CORE MECHANICS
