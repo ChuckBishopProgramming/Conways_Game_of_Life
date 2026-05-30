@@ -3,7 +3,9 @@
 //validate starting input
 //plot cells
 //update tracking array
+//take add to initial x 
 //count neighbors of those on tracking array
+//
 
 public class Program
 {
@@ -28,13 +30,18 @@ public class Program
         //PLACE CELLS
         LoopForCells(noOfCells);
 
-        //FILL TRACKING ARRAY
+        //FILL INITIAL ARRAY
         Storage.CreateInitialArrays(noOfCells);
         Space();
         Line();
 
         //PRINT GRID
         Print(grid);
+        PrintArray(Storage.initialX);
+
+        //GET NEIGHBOR COUNT
+        //int neighborCount = Neighbors.GetNeighborCount(grid, Storage.initialX, Storage.initialY);
+        //Console.WriteLine(neighborCount);
     }
 
     //CORE MECHANICS
@@ -88,6 +95,13 @@ public class Program
                 Console.Write(grid[i, j]);
             }
             Console.Write("\n");
+        }
+    }
+    static public void PrintArray(int[] arr)
+    {
+        foreach (int number in arr)
+        {
+            Console.WriteLine(number);
         }
     }
 
