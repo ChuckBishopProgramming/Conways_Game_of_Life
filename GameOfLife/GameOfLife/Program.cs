@@ -1,7 +1,9 @@
 ﻿//create a grid
 //get starting input
 //validate starting input
-//
+//plot cells
+//update tracking array
+//count neighbors of those on tracking array
 
 public class Program
 {
@@ -12,19 +14,26 @@ public class Program
     const string fillingAlive = "O";
     static void Main(string[] args)
     {
+        //GREETING
         Console.WriteLine("WELCOME, It's Alive!!!!");
+        Line();
 
         //FILL GRID W DEAD CELLS
-        //++++++++++++++++++++++++++++++++++
         Fill(fillingDead);
 
         //PROMPT FOR CELL #
-        //++++++++++++++++++++++++++++++++++
         int noOfCells = PromptForCellNumber();
-                
+        Line();
+
+        //PLACE CELLS
         LoopForCells(noOfCells);
-        //ConsoleReset();
-        SpaceForFormat();
+
+        //FILL TRACKING ARRAY
+        Storage.CreateInitialArrays(noOfCells);
+        Space();
+        Line();
+
+        //PRINT GRID
         Print(grid);
     }
 
@@ -82,6 +91,17 @@ public class Program
         }
     }
 
+    //FORMATTING
+    //++++++++++++++++++++++++++++++++++
+    static public void Line()
+    {
+        Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
+    }
+    static public void Space()
+    {
+        Console.WriteLine();
+    }
+
     //PROMPT
     //++++++++++++++++++++++++++++++++++
     static public void CellFilled()
@@ -96,7 +116,7 @@ public class Program
 
         while (!userInputValidNumber)
         {
-            Console.Write("How many cells do you want to place?");
+            Console.Write("How many cells do you want to place? ");
             string userInput = Console.ReadLine();
 
             userInputValidNumber = int.TryParse(userInput, out number);
@@ -171,10 +191,6 @@ public class Program
             }
         }
         return yPos;
-    }
-    static public void SpaceForFormat()
-    {
-        Console.WriteLine();
-    }
+    }    
 }
 
