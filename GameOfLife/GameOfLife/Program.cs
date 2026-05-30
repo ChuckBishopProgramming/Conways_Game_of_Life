@@ -30,10 +30,13 @@ public class Program
         //PLACE CELLS
         LoopForCells(noOfCells);
 
-        //FILL INITIAL ARRAY
+        //CREATE INITIAL ARRAY
         Storage.CreateInitialArrays(noOfCells);
         Space();
         Line();
+
+        //FILL INITIAL ARRAY
+        //---> DO THIS NEXT
 
         //PRINT GRID
         Print(grid);
