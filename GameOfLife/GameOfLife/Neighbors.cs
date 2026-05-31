@@ -139,9 +139,7 @@
             seSkip = true;
             eSkip = true;
             neSkip = true;
-        }       
-
-        
+        }               
         
         //North   
         if (!nSkip)
@@ -160,7 +158,6 @@
                 neighborCount++;
             }
         }
-
 
         //West
         if (!wSkip)

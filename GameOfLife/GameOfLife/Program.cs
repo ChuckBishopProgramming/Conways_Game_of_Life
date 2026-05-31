@@ -26,7 +26,7 @@ public class Program
 
         //FILL GRID W DEAD CELLS
         Fill(grid, fillingDead);
-        //Fill(bufferGrid, fillingDead);
+        Fill(bufferGrid, fillingDead);
 
         //PROMPT FOR CELL #
         int noOfCells = PromptForCellNumber();
@@ -34,11 +34,10 @@ public class Program
 
         //CREATE INITIAL ARRAY
         Storage.CreateInitialArrays(noOfCells);
-        Storage.CreateInitialTrackingArray(noOfCells);
+        //Storage.CreateInitialTrackingArray(noOfCells);
 
         //PLACE CELLS & FILL ARRAYS
         PromptAndPlaceCells(noOfCells, bufferGrid);
-        //get x,y, fill tracking
         Line();
 
         //PRINT GRID
@@ -58,8 +57,8 @@ public class Program
         Print2DString(bufferGrid);
 
         //TESTING:
-        Console.WriteLine("Storage tracking array");
-        Print2DInt(Storage.trackingArray);
+        //Console.WriteLine("Storage tracking array");
+        //Print2DInt(Storage.trackingArray);
 
         //int neighborCount = Neighbors.GetNeighborCountArray(grid, Storage.initialX, Storage.initialY);
         //Console.WriteLine($"The neighbor Count is: {neighborCount}");
@@ -80,19 +79,18 @@ public class Program
             int x = GetXPos(i + 1);
             int y = GetYPos(i + 1);
 
-            //fill array
+            //fill initial arrays
             AddXYToArray(i, x, y);
-            FillTracking(Storage.trackingArray, i, x, y);
 
             if (arr[x - 1, y - 1] == fillingAlive)
             {
                 CellFilled();
-                i--;                
+                i--;
             }
             else
             {
                 arr[x - 1, y - 1] = fillingAlive;
-            }
+            }            
         }
     }
     static public void Fill(string[,] arr, string filling)
@@ -105,20 +103,20 @@ public class Program
             }
         }
     }
-    static public void FillTracking(int[,] trackingArray, int i,  int x, int y)
-    {
-        for (int j = 0; j < trackingArray.GetLength(1); j++)
-        {
-            if (j == 0)
-            {
-                trackingArray[i, j] = x;
-            }
-            if (j == 1)
-            {
-                trackingArray[i, j] = y;
-            }
-        }
-    }
+    //static public void FillTracking(int[,] trackingArray, int i,  int x, int y)
+    //{
+    //    for (int j = 0; j < trackingArray.GetLength(1); j++)
+    //    {
+    //        if (j == 0)
+    //        {
+    //            trackingArray[i, j] = x;
+    //        }
+    //        if (j == 1)
+    //        {
+    //            trackingArray[i, j] = y;
+    //        }
+    //    }
+    //}
     static public void UpdateBuffer()
     {
         //set cell state to dead
