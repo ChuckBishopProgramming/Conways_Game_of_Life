@@ -8,11 +8,10 @@
 
         int numberOfCells = x.Length;
 
-        
-        
-
         for (int i = 0; i < numberOfCells; i++)
         {
+            neighborCount = 0;
+
             bool nSkip = false;
             bool neSkip = false;
             bool eSkip = false;
@@ -98,7 +97,41 @@
                 neighborCount++;
             }
         }
-        return neighborCount;  
+        return neighborCount;
 
+    }
+    public static bool LiveOrDieLogic(int neighborCount)
+    {
+        bool cellAlive = true;
+
+        //UNDERPOP
+        if (neighborCount < 2)
+        {
+            cellAlive = false;
+        }
+
+        //LIFE
+        else if (neighborCount == 2 || neighborCount == 3)
+        {
+            cellAlive = true;
+        }
+
+        //OVERPOP
+        else if (neighborCount > 3)
+        {
+            cellAlive = false;
+        }
+
+        //REPRO
+        else if (neighborCount == 3)
+        {
+            cellAlive = true;
+        }
+
+        else
+        {
+            cellAlive = true;
+        }
+        return cellAlive;
     }
 }
