@@ -16,6 +16,8 @@ public class Program
     const string fillingDead = ".";
     const string fillingAlive = "O";
 
+    const string lineDecor = "------------------------------------------------------------------------------------------------------------------------";
+
     static void Main(string[] args)
     {
         //GREETING
@@ -24,7 +26,7 @@ public class Program
 
         //FILL GRID W DEAD CELLS
         Fill(grid, fillingDead);
-        Fill(bufferGrid, fillingDead);
+        //Fill(bufferGrid, fillingDead);
 
         //PROMPT FOR CELL #
         int noOfCells = PromptForCellNumber();
@@ -35,50 +37,61 @@ public class Program
         Storage.CreateInitialTrackingArray(noOfCells);
 
         //PLACE CELLS & FILL ARRAYS
-        PromptAndPlaceCells(noOfCells);
+        PromptAndPlaceCells(noOfCells, bufferGrid);
+        //get x,y, fill tracking
         Line();
 
         //PRINT GRID
+        Print2DString(bufferGrid);
         Print2DString(grid);
         Line();
-        Print2DString(bufferGrid);
+
+        //TESTING
         PrintArray(Storage.initialX);
         PrintArray(Storage.initialY);
 
-        //GET NEIGHBOR COUNT
-        int neighborCount = Neighbors.GetNeighborCountArray(grid, Storage.initialX, Storage.initialY);
-        Console.WriteLine(neighborCount);
+        //START 
+        ReadyToStart();
+
+        //UPDATE BUFFER
+        UpdateBuffer();
+        Print2DString(bufferGrid);
 
         //TESTING:
+        Console.WriteLine("Storage tracking array");
         Print2DInt(Storage.trackingArray);
+
+        //int neighborCount = Neighbors.GetNeighborCountArray(grid, Storage.initialX, Storage.initialY);
+        //Console.WriteLine($"The neighbor Count is: {neighborCount}");
 
         //START 
         ReadyToStart();
+
+
+        //foreach skips empty?
     }
 
     //CORE MECHANICS
     //++++++++++++++++++++++++++++++++++
-    static public void PromptAndPlaceCells(int numberOfCells)
+    static public void PromptAndPlaceCells(int numberOfCells, string[,] arr)
     {
         for (int i = 0; i < numberOfCells; i++)
         {
-
             int x = GetXPos(i + 1);
             int y = GetYPos(i + 1);
-            //Print(grid);
 
             //fill array
             AddXYToArray(i, x, y);
             FillTracking(Storage.trackingArray, i, x, y);
 
-            if (bufferGrid[x - 1, y - 1] == fillingAlive)
+            if (arr[x - 1, y - 1] == fillingAlive)
             {
                 CellFilled();
                 i--;                
             }
             else
             {
-                bufferGrid[x - 1, y - 1] = fillingAlive;
+                arr[x - 1, y - 1] = fillingAlive;
             }
         }
     }
@@ -108,10 +121,35 @@ public class Program
     }
     static public void UpdateBuffer()
     {
-        //change current references to grid to buffer
-        //check if cells are different between grid and buffer
-        //if if true update main display cell to match buffer cell
-        
+        //set cell state to dead
+        //if cell is full set to alive
+        //iterate over buffer array
+        //apply cell logic to each cell
+        //if cell logic = false kill cell
+        //if cell logic = true birth cell
+
+        bool cellAlive = false;
+
+        for (int i = 0; i < bufferGrid.GetLength(0); i++)
+        {
+            for (int j = 0; j < bufferGrid.GetLength(1); j++)
+            {
+                int x = i;
+                int y = j;
+
+                int neighborCount = Neighbors.GetNeighborCountCell(bufferGrid, i, j);
+                cellAlive = Neighbors.LiveOrDieLogic(neighborCount);
+
+                if (cellAlive)
+                {
+                    bufferGrid[i, j] = fillingAlive;
+                }
+                else
+                {
+                    bufferGrid[i, j] = fillingDead;
+                }
+            }
+        }
     }
 
     //MECHANICAL HELPERS
@@ -127,6 +165,7 @@ public class Program
         Console.WriteLine(HEADER);
         Print2DString(grid);
     }
+
     //DISPLAY
     //++++++++++++++++++++++++++++++++++
     static public void Print2DString(string[,] grid)
@@ -158,12 +197,16 @@ public class Program
             Console.WriteLine(number);
         }
     }
+    static public void UpdateDisplay()
+    {
+
+    }
 
     //FORMATTING
     //++++++++++++++++++++++++++++++++++
     static public void Line()
     {
-        Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
+        Console.WriteLine(lineDecor);
     }
     static public void Space()
     {
@@ -174,6 +217,7 @@ public class Program
     //++++++++++++++++++++++++++++++++++
     static public void ReadyToStart()
     {
+        //Sketchy
         bool start = false;
         Console.WriteLine("Press Enter to Start or Escape to exit");
 
@@ -194,7 +238,8 @@ public class Program
                     break;
                 }
             }
-        }        
+        }
+        Console.WriteLine("Starting things");
     }
     static public void CellFilled()
     {

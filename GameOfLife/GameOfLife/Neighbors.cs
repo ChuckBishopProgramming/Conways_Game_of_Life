@@ -116,81 +116,110 @@
         bool nwSkip = false;
 
 
-        if (currentX == 1)
+        if (currentX <= 1)
         {
             nwSkip = true;
             nSkip = true;
             neSkip = true;
         }
-        if (currentX == 30)
+        if (currentX >= 29)
         {
             swSkip = true;
             sSkip = true;
-            swSkip = true;
+            seSkip = true;
         }
-        if (currentY == 1)
+        if (currentY <= 1)
         {
             swSkip = true;
             wSkip = true;
             nwSkip = true;
         }
-        if (currentY == 120)
+        if (currentY >= 119)
         {
             seSkip = true;
-            nSkip = true;
+            eSkip = true;
             neSkip = true;
+        }       
+
+        
+        
+        //North   
+        if (!nSkip)
+        {
+            if (array[currentX - 1, currentY] == "O")
+            {
+                neighborCount++;
+            }
         }
 
-        //North
-        if (array[currentX - 1, currentY] == "O" && nSkip == false)
+        //NorthWest        
+        if (!nwSkip)
         {
-            neighborCount++;
+            if (array[currentX - 1, currentY - 1] == "O")
+            {
+                neighborCount++;
+            }
         }
 
-        //NorthWest
-        if (array[currentX - 1, currentY - 1] == "O" && nwSkip == false)
-        {
-            neighborCount++;
-        }
 
         //West
-        if (array[currentX, currentY - 1] == "O" && wSkip == false)
+        if (!wSkip)
         {
-            neighborCount++;
+            if (array[currentX, currentY - 1] == "O")
+            {
+                neighborCount++;
+            }
         }
 
         //SouthWest
-        if (array[currentX + 1, currentY - 1] == "O" && swSkip == false)
+        if (!swSkip)
         {
-            neighborCount++;
+            if (array[currentX +1 , currentY - 1] == "O")
+            {
+                neighborCount++;
+            }
         }
 
         //South
-        if (array[currentX + 1, currentY] == "O" && sSkip == false)
+        if (!sSkip)
         {
-            neighborCount++;
+            if (array[currentX + 1, currentY] == "O")
+            {
+                neighborCount++;
+            }
         }
 
         //SouthEast
-        if (array[currentX + 1, currentY + 1] == "O" && seSkip == false)
+        if (!seSkip)
         {
-            neighborCount++;
+            if (array[currentX + 1, currentY +1] == "O")
+            {
+                neighborCount++;
+            }
         }
 
         //East
-        if (array[currentX, currentY + 1] == "O" && eSkip == false)
+        if (!eSkip)
         {
-            neighborCount++;
+            if (array[currentX, currentY + 1] == "O")
+            {
+                neighborCount++;
+            }
         }
 
         //NorthEast
-        if (array[currentX - 1, currentY + 1] == "O" && neSkip == false)
+        if (!neSkip)
         {
-            neighborCount++;
-
+            if (array[currentX - 1, currentY + 1] == "O")
+            {
+                neighborCount++;
+            }
         }
         return neighborCount;
     }
+    //Get neighbor cell count for 1st cell in tracking array
+    //apply liveordie logic
+    //update bufferGrid array
     public static bool LiveOrDieLogic(int neighborCount)
     {
         bool cellAlive = true;
@@ -214,10 +243,10 @@
         }
 
         //REPRO
-        else if (neighborCount == 3)
-        {
-            cellAlive = true;
-        }
+        //else if (neighborCount == 3)
+        //{
+        //    cellAlive = true;
+        //}
 
         else
         {
