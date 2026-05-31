@@ -5,7 +5,9 @@
         int neighborCount = 0;
         int currentX = 0;
         int currentY = 0;
+
         int numberOfCells = x.Length;
+
         bool nSkip = false;
         bool neSkip = false;
         bool eSkip = false;
@@ -47,49 +49,49 @@
             }
 
             //North
-            if (array[currentX - 1, currentY] == "O" || nSkip == false)
+            if (array[currentX - 1, currentY] == "O" && nSkip == false)
             {
                 neighborCount++;
             }
 
             //NorthWest
-            if (array[currentX - 1, currentY - 1] == "O" || nwSkip == false)
+            if (array[currentX - 1, currentY - 1] == "O" && nwSkip == false)
             {
                 neighborCount++;
             }
 
             //West
-            if (array[currentX, currentY - 1] == "O" || wSkip == false)
+            if (array[currentX, currentY - 1] == "O" && wSkip == false)
             {
                 neighborCount++;
             }
 
             //SouthWest
-            if (array[currentX + 1, currentY - 1] == "O" || swSkip == false)
+            if (array[currentX + 1, currentY - 1] == "O" && swSkip == false)
             {
                 neighborCount++;
             }
 
             //South
-            if (array[currentX + 1, currentY] == "O" || sSkip == false)
+            if (array[currentX + 1, currentY] == "O" && sSkip == false)
             {
                 neighborCount++;
             }
 
             //SouthEast
-            if (array[currentX + 1, currentY + 1] == "O" || seSkip == false)
+            if (array[currentX + 1, currentY + 1] == "O" && seSkip == false)
             {
                 neighborCount++;
             }
 
             //East
-            if (array[currentX, currentY + 1] == "O" || eSkip == false)
+            if (array[currentX, currentY + 1] == "O" && eSkip == false)
             {
                 neighborCount++;
             }
 
             //NorthEast
-            if (array[currentX - 1, currentY + 1] == "O" || neSkip == false)
+            if (array[currentX - 1, currentY + 1] == "O" && neSkip == false)
             {
                 neighborCount++;
             }

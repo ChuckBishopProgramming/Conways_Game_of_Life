@@ -1,10 +1,8 @@
 ﻿//create a grid
 //get starting input
 //validate starting input
-//plot cells
-//update tracking array
-//take add to initial x 
-//count neighbors of those on tracking array
+//plot cells and update initial arrays
+//count neighbors of those on initial arrays
 //
 
 public class Program
@@ -27,29 +25,26 @@ public class Program
         int noOfCells = PromptForCellNumber();
         Line();
 
-        //PLACE CELLS
-        LoopForCells(noOfCells);
-
         //CREATE INITIAL ARRAY
-        Storage.CreateInitialArrays(noOfCells);
-        Space();
-        Line();
+        Storage.CreateInitialArrays(noOfCells);        
 
-        //FILL INITIAL ARRAY
-        //---> DO THIS NEXT
+        //PLACE CELLS & FILL ARRAYS
+        PromptAndPlaceCells(noOfCells);       
+
 
         //PRINT GRID
         Print(grid);
         PrintArray(Storage.initialX);
+        PrintArray(Storage.initialY);
 
         //GET NEIGHBOR COUNT
-        int neighborCount = Neighbors.GetNeighborCount(grid, Storage.initialX, Storage.initialY);
-        Console.WriteLine(neighborCount);
+        //int neighborCount = Neighbors.GetNeighborCount(grid, Storage.initialX, Storage.initialY);
+        //Console.WriteLine(neighborCount);
     }
 
     //CORE MECHANICS
     //++++++++++++++++++++++++++++++++++
-    static public void LoopForCells(int numberOfCells)
+    static public void PromptAndPlaceCells(int numberOfCells)
     {
         for (int i = 0; i < numberOfCells; i++)
         {
@@ -57,6 +52,9 @@ public class Program
             int x = GetXPos(i + 1);
             int y = GetYPos(i + 1);
             //Print(grid);
+
+            //fill array
+            AddXYToArray(i, x, y);
 
             if (grid[x - 1, y - 1] == fillingAlive)
             {
@@ -81,6 +79,11 @@ public class Program
     }
     //MECHANICAL HELPERS
     //++++++++++++++++++++++++++++++++++
+    static public void AddXYToArray(int i, int x, int y)
+    {
+        Storage.initialX[i] = x;
+        Storage.initialY[i] = y;
+    }
     static public void ConsoleReset()
     {
         Console.Clear();
