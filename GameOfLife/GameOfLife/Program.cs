@@ -26,11 +26,11 @@ public class Program
         Line();
 
         //CREATE INITIAL ARRAY
-        Storage.CreateInitialArrays(noOfCells);        
+        Storage.CreateInitialArrays(noOfCells);
 
         //PLACE CELLS & FILL ARRAYS
-        PromptAndPlaceCells(noOfCells);       
-
+        PromptAndPlaceCells(noOfCells);
+        Line();
 
         //PRINT GRID
         Print(grid);
@@ -38,8 +38,8 @@ public class Program
         PrintArray(Storage.initialY);
 
         //GET NEIGHBOR COUNT
-        //int neighborCount = Neighbors.GetNeighborCount(grid, Storage.initialX, Storage.initialY);
-        //Console.WriteLine(neighborCount);
+        int neighborCount = Neighbors.GetNeighborCount(grid, Storage.initialX, Storage.initialY);
+        Console.WriteLine(neighborCount);
     }
 
     //CORE MECHANICS

@@ -8,18 +8,20 @@
 
         int numberOfCells = x.Length;
 
-        bool nSkip = false;
-        bool neSkip = false;
-        bool eSkip = false;
-        bool seSkip = false;
-        bool sSkip = false;
-        bool swSkip = false;
-        bool wSkip = false;
-        bool nwSkip = false;
+        
         
 
         for (int i = 0; i < numberOfCells; i++)
         {
+            bool nSkip = false;
+            bool neSkip = false;
+            bool eSkip = false;
+            bool seSkip = false;
+            bool sSkip = false;
+            bool swSkip = false;
+            bool wSkip = false;
+            bool nwSkip = false;
+
             currentX = x[i];
             currentY = y[i];
 
