@@ -1,9 +1,11 @@
 ﻿//create a grid
 //get starting input
 //validate starting input
-//plot cells and update initial arrays
+//plot cells on buffer
+//update initial arrays
 //count neighbors of those on initial arrays
 //
+//No logic before start prompt
 
 public class Program
 {
@@ -21,7 +23,8 @@ public class Program
         Line();
 
         //FILL GRID W DEAD CELLS
-        Fill(fillingDead);
+        Fill(grid, fillingDead);
+        Fill(bufferGrid, fillingDead);
 
         //PROMPT FOR CELL #
         int noOfCells = PromptForCellNumber();
@@ -37,6 +40,8 @@ public class Program
 
         //PRINT GRID
         Print2DString(grid);
+        Line();
+        Print2DString(bufferGrid);
         PrintArray(Storage.initialX);
         PrintArray(Storage.initialY);
 
@@ -46,6 +51,9 @@ public class Program
 
         //TESTING:
         Print2DInt(Storage.trackingArray);
+
+        //START 
+        ReadyToStart();
     }
 
     //CORE MECHANICS
@@ -63,24 +71,24 @@ public class Program
             AddXYToArray(i, x, y);
             FillTracking(Storage.trackingArray, i, x, y);
 
-            if (grid[x - 1, y - 1] == fillingAlive)
+            if (bufferGrid[x - 1, y - 1] == fillingAlive)
             {
                 CellFilled();
                 i--;                
             }
             else
             {
-                grid[x - 1, y - 1] = fillingAlive;
+                bufferGrid[x - 1, y - 1] = fillingAlive;
             }
         }
     }
-    static public void Fill(string filling)
+    static public void Fill(string[,] arr, string filling)
     {
-        for (int i = 0; i < grid.GetLength(0); i++)
+        for (int i = 0; i < arr.GetLength(0); i++)
         {
-            for (int j = 0; j < grid.GetLength(1); j++)
+            for (int j = 0; j < arr.GetLength(1); j++)
             {
-                grid[i, j] = filling;
+                arr[i, j] = filling;
             }
         }
     }
@@ -97,6 +105,13 @@ public class Program
                 trackingArray[i, j] = y;
             }
         }
+    }
+    static public void UpdateBuffer()
+    {
+        //change current references to grid to buffer
+        //check if cells are different between grid and buffer
+        //if if true update main display cell to match buffer cell
+        
     }
 
     //MECHANICAL HELPERS
@@ -157,6 +172,30 @@ public class Program
 
     //PROMPT
     //++++++++++++++++++++++++++++++++++
+    static public void ReadyToStart()
+    {
+        bool start = false;
+        Console.WriteLine("Press Enter to Start or Escape to exit");
+
+        while (!start)
+        {
+            ConsoleKeyInfo keyPress = Console.ReadKey();
+            if (keyPress.Key == ConsoleKey.Enter)
+            {
+                //start stuff
+                start = true;
+            }
+            else
+            {
+                if (keyPress.Key == ConsoleKey.Escape)
+                {
+                    //start stuff
+                    start = false;
+                    break;
+                }
+            }
+        }        
+    }
     static public void CellFilled()
     {
         Console.WriteLine("That cell was already activated, please pick another. Press Enter to Continue");

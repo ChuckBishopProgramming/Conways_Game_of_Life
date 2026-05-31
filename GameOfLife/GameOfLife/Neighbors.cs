@@ -95,7 +95,7 @@
             if (array[currentX - 1, currentY + 1] == "O" && neSkip == false)
             {
                 neighborCount++;
-            }
+            }   
         }
         return neighborCount;
 
