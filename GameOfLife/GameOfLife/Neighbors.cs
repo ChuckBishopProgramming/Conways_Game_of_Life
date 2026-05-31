@@ -144,7 +144,7 @@
         //North   
         if (!nSkip)
         {
-            if (array[currentX - 1, currentY] == "O")
+            if (array[currentX - 1, currentY] == Program.fillingAlive)
             {
                 neighborCount++;
             }
@@ -153,7 +153,7 @@
         //NorthWest        
         if (!nwSkip)
         {
-            if (array[currentX - 1, currentY - 1] == "O")
+            if (array[currentX - 1, currentY - 1] == Program.fillingAlive)
             {
                 neighborCount++;
             }
@@ -162,7 +162,7 @@
         //West
         if (!wSkip)
         {
-            if (array[currentX, currentY - 1] == "O")
+            if (array[currentX, currentY - 1] == Program.fillingAlive)
             {
                 neighborCount++;
             }
@@ -171,7 +171,7 @@
         //SouthWest
         if (!swSkip)
         {
-            if (array[currentX +1 , currentY - 1] == "O")
+            if (array[currentX +1 , currentY - 1] == Program.fillingAlive)
             {
                 neighborCount++;
             }
@@ -180,7 +180,7 @@
         //South
         if (!sSkip)
         {
-            if (array[currentX + 1, currentY] == "O")
+            if (array[currentX + 1, currentY] == Program.fillingAlive)
             {
                 neighborCount++;
             }
@@ -189,7 +189,7 @@
         //SouthEast
         if (!seSkip)
         {
-            if (array[currentX + 1, currentY +1] == "O")
+            if (array[currentX + 1, currentY +1] == Program.fillingAlive)
             {
                 neighborCount++;
             }
@@ -198,7 +198,7 @@
         //East
         if (!eSkip)
         {
-            if (array[currentX, currentY + 1] == "O")
+            if (array[currentX, currentY + 1] == Program.fillingAlive)
             {
                 neighborCount++;
             }
@@ -207,7 +207,7 @@
         //NorthEast
         if (!neSkip)
         {
-            if (array[currentX - 1, currentY + 1] == "O")
+            if (array[currentX - 1, currentY + 1] == Program.fillingAlive)
             {
                 neighborCount++;
             }
@@ -240,10 +240,10 @@
         }
 
         //REPRO
-        //else if (neighborCount == 3)
-        //{
-        //    cellAlive = true;
-        //}
+        else if (neighborCount == 3)
+        {
+            cellAlive = true;
+        }
 
         else
         {

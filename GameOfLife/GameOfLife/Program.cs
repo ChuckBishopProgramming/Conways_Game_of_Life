@@ -6,15 +6,26 @@
 //count neighbors of those on initial arrays
 //
 //No logic before start prompt
+//start prompt
+//apply logic
+
+
+//rule logic trouble shoot
+//grib update toggle
 
 public class Program
 {
     public static string[,] grid = new string[30, 120];
-    public static string[,] bufferGrid = new string[30, 120];    
+    public static string[,] bufferGrid = new string[30, 120];
+    public static string[,] bufferGrid2 = new string[30, 120];
+    public static string[,] currentGrid = new string[30, 120];
+    public static string[,] futureGrid = new string[30, 120];
+
+    public static int cycleCount = 0;
 
     const string HEADER = "CONWAY'S GAME OF LIFE";
-    const string fillingDead = ".";
-    const string fillingAlive = "O";
+    public const string fillingDead = ".";
+    public const string fillingAlive = "O";
 
     const string lineDecor = "------------------------------------------------------------------------------------------------------------------------";
 
@@ -26,7 +37,9 @@ public class Program
 
         //FILL GRID W DEAD CELLS
         Fill(grid, fillingDead);
+        Fill(currentGrid, fillingDead);
         Fill(bufferGrid, fillingDead);
+        Fill(bufferGrid2, fillingDead);
 
         //PROMPT FOR CELL #
         int noOfCells = PromptForCellNumber();
@@ -34,14 +47,13 @@ public class Program
 
         //CREATE INITIAL ARRAY
         Storage.CreateInitialArrays(noOfCells);
-        //Storage.CreateInitialTrackingArray(noOfCells);
 
         //PLACE CELLS & FILL ARRAYS
-        PromptAndPlaceCells(noOfCells, bufferGrid);
+        PromptAndPlaceCells(noOfCells, currentGrid);
         Line();
 
         //PRINT GRID
-        Print2DString(bufferGrid);
+        Print2DString(currentGrid);
         Print2DString(grid);
         Line();
 
@@ -53,21 +65,11 @@ public class Program
         ReadyToStart();
 
         //UPDATE BUFFER
-        UpdateBuffer();
-        Print2DString(bufferGrid);
-
-        //TESTING:
-        //Console.WriteLine("Storage tracking array");
-        //Print2DInt(Storage.trackingArray);
-
-        //int neighborCount = Neighbors.GetNeighborCountArray(grid, Storage.initialX, Storage.initialY);
-        //Console.WriteLine($"The neighbor Count is: {neighborCount}");
-
-        //START 
-        ReadyToStart();
-
-
-        //foreach skips empty?
+        UpdateGrid();
+        Print2DString(currentGrid);
+        Console.ReadKey();
+        UpdateGrid();
+        Print2DString(currentGrid);
     }
 
     //CORE MECHANICS
@@ -102,54 +104,35 @@ public class Program
                 arr[i, j] = filling;
             }
         }
-    }
-    //static public void FillTracking(int[,] trackingArray, int i,  int x, int y)
-    //{
-    //    for (int j = 0; j < trackingArray.GetLength(1); j++)
-    //    {
-    //        if (j == 0)
-    //        {
-    //            trackingArray[i, j] = x;
-    //        }
-    //        if (j == 1)
-    //        {
-    //            trackingArray[i, j] = y;
-    //        }
-    //    }
-    //}
-    static public void UpdateBuffer()
+    }    
+    static public void UpdateGrid()
     {
-        //set cell state to dead
-        //if cell is full set to alive
-        //iterate over buffer array
-        //apply cell logic to each cell
-        //if cell logic = false kill cell
-        //if cell logic = true birth cell
+        bool cellAlive = false;      
+        Fill(futureGrid, fillingDead);
 
-        bool cellAlive = false;
-
-        for (int i = 0; i < bufferGrid.GetLength(0); i++)
+        for (int i = 0; i < currentGrid.GetLength(0); i++)
         {
-            for (int j = 0; j < bufferGrid.GetLength(1); j++)
+            for (int j = 0; j < currentGrid.GetLength(1); j++)
             {
                 int x = i;
                 int y = j;
 
-                int neighborCount = Neighbors.GetNeighborCountCell(bufferGrid, i, j);
+                int neighborCount = Neighbors.GetNeighborCountCell(currentGrid, i, j);
                 cellAlive = Neighbors.LiveOrDieLogic(neighborCount);
 
                 if (cellAlive)
                 {
-                    bufferGrid[i, j] = fillingAlive;
+                    futureGrid[i, j] = fillingAlive;
                 }
                 else
                 {
-                    bufferGrid[i, j] = fillingDead;
+                    futureGrid[i, j] = fillingDead;
                 }
             }
         }
-    }
-
+        currentGrid = futureGrid;
+    }    
+ 
     //MECHANICAL HELPERS
     //++++++++++++++++++++++++++++++++++
     static public void AddXYToArray(int i, int x, int y)
@@ -162,6 +145,11 @@ public class Program
         Console.Clear();
         Console.WriteLine(HEADER);
         Print2DString(grid);
+    }    
+    static public void IncrementCycleCount()
+    {
+        //SUS
+        cycleCount++;
     }
 
     //DISPLAY
