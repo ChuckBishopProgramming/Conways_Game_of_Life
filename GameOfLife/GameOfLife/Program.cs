@@ -8,10 +8,12 @@
 public class Program
 {
     public static string[,] grid = new string[30, 120];
+    public static string[,] bufferGrid = new string[30, 120];    
 
     const string HEADER = "CONWAY'S GAME OF LIFE";
     const string fillingDead = ".";
     const string fillingAlive = "O";
+
     static void Main(string[] args)
     {
         //GREETING
@@ -27,19 +29,23 @@ public class Program
 
         //CREATE INITIAL ARRAY
         Storage.CreateInitialArrays(noOfCells);
+        Storage.CreateInitialTrackingArray(noOfCells);
 
         //PLACE CELLS & FILL ARRAYS
         PromptAndPlaceCells(noOfCells);
         Line();
 
         //PRINT GRID
-        Print(grid);
+        Print2DString(grid);
         PrintArray(Storage.initialX);
         PrintArray(Storage.initialY);
 
         //GET NEIGHBOR COUNT
-        int neighborCount = Neighbors.GetNeighborCount(grid, Storage.initialX, Storage.initialY);
+        int neighborCount = Neighbors.GetNeighborCountArray(grid, Storage.initialX, Storage.initialY);
         Console.WriteLine(neighborCount);
+
+        //TESTING:
+        Print2DInt(Storage.trackingArray);
     }
 
     //CORE MECHANICS
@@ -55,6 +61,7 @@ public class Program
 
             //fill array
             AddXYToArray(i, x, y);
+            FillTracking(Storage.trackingArray, i, x, y);
 
             if (grid[x - 1, y - 1] == fillingAlive)
             {
@@ -64,7 +71,7 @@ public class Program
             else
             {
                 grid[x - 1, y - 1] = fillingAlive;
-            }            
+            }
         }
     }
     static public void Fill(string filling)
@@ -77,6 +84,21 @@ public class Program
             }
         }
     }
+    static public void FillTracking(int[,] trackingArray, int i,  int x, int y)
+    {
+        for (int j = 0; j < trackingArray.GetLength(1); j++)
+        {
+            if (j == 0)
+            {
+                trackingArray[i, j] = x;
+            }
+            if (j == 1)
+            {
+                trackingArray[i, j] = y;
+            }
+        }
+    }
+
     //MECHANICAL HELPERS
     //++++++++++++++++++++++++++++++++++
     static public void AddXYToArray(int i, int x, int y)
@@ -88,11 +110,22 @@ public class Program
     {
         Console.Clear();
         Console.WriteLine(HEADER);
-        Print(grid);
+        Print2DString(grid);
     }
     //DISPLAY
     //++++++++++++++++++++++++++++++++++
-    static public void Print(string[,] grid)
+    static public void Print2DString(string[,] grid)
+    {
+        for (int i = 0; i < grid.GetLength(0); i++)
+        {
+            for (int j = 0; j < grid.GetLength(1); j++)
+            {
+                Console.Write(grid[i, j]);
+            }
+            Console.Write("\n");
+        }
+    }
+    static public void Print2DInt(int[,] grid)
     {
         for (int i = 0; i < grid.GetLength(0); i++)
         {
@@ -185,7 +218,7 @@ public class Program
         while (!xPosValid)
         {
             xPos = GetNumberFromUser(startingPosPrompt, startingPosFPrompt, maxLength);
-            if (!(xPos < 1 || xPos > 30))
+            if (!(xPos < 0 || xPos > 31))
             {
                 xPosValid = true;
             }
@@ -205,7 +238,7 @@ public class Program
         while (!yPosValid)
         {
             yPos = GetNumberFromUser(startingPosPrompt, startingPosFPrompt, maxLength);
-            if (!(yPos < 1 || yPos > 120))
+            if (!(yPos < 0 || yPos > 121))
             {
                 yPosValid = true;
             }
