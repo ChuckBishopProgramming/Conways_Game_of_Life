@@ -16,5 +16,12 @@
     // PAUSED
 
     // STOP
+    public static void OneGeneration()
+    {
+        Program.currentGrid = Program.UpdateGrid();
+        Program.Print2DString(Program.currentGrid);
+        Console.ReadKey();
+
+    }
 
 }

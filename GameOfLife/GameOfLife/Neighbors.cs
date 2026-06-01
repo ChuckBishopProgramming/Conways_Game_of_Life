@@ -1,5 +1,5 @@
 ﻿public class Neighbors
-{    
+{
     static public int GetNeighborCountCell(string[,] array, int x, int y)
     {
         int neighborCount = 0;
@@ -39,8 +39,8 @@
             seSkip = true;
             eSkip = true;
             neSkip = true;
-        }               
-        
+        }
+
         //North   
         if (!nSkip)
         {
@@ -71,7 +71,7 @@
         //SouthWest
         if (!swSkip)
         {
-            if (array[currentX +1 , currentY - 1] == Program.fillingAlive)
+            if (array[currentX + 1, currentY - 1] == Program.fillingAlive)
             {
                 neighborCount++;
             }
@@ -89,7 +89,7 @@
         //SouthEast
         if (!seSkip)
         {
-            if (array[currentX + 1, currentY +1] == Program.fillingAlive)
+            if (array[currentX + 1, currentY + 1] == Program.fillingAlive)
             {
                 neighborCount++;
             }
@@ -113,37 +113,5 @@
             }
         }
         return neighborCount;
-    }
-    //Get neighbor cell count for 1st cell in tracking array
-    //apply liveordie logic
-    //update bufferGrid array
-    public static bool LiveOrDieLogic(int neighborCount, string[,] arr, int x, int y)
-    {
-        bool cellAlive = false;
-
-        //UNDERPOP
-        if (neighborCount < 2)
-        {
-            cellAlive = false;
-        }
-
-        //LIFE //LIVE ON
-        if (arr[x,y] == Program.fillingAlive && (neighborCount == 2 || neighborCount == 3))
-        {
-            cellAlive = true;
-        }
-
-        //OVERPOP
-        if (neighborCount > 3)
-        {
-            cellAlive = false;
-        }
-
-        //REPRO
-        if (neighborCount == 3)
-        {
-            cellAlive = true;
-        }
-        return cellAlive;
     }
 }

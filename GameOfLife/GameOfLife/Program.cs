@@ -1,26 +1,16 @@
-﻿//create a grid
-//get starting input
-//validate starting input
-//plot cells on buffer
-//update initial arrays
-//count neighbors of those on initial arrays
-//
-//No logic before start prompt
-//start prompt
-//apply logic
-
-//rule logic trouble shoot
-//grib update toggle
+﻿//   Notes: Working MVP
+//          Display grid not wired
+//          Console clear between generations
+//          Add autoPlay, pause, quit
 
 public class Program
 {
-
     //these are 0-29 and 0-119
-    public static string[,] grid = new string[30, 120]; 
+    public static string[,] grid = new string[30, 120];
     public static string[,] currentGrid = new string[30, 120];
     public static string[,] futureGrid = new string[30, 120];
 
-    public static int cycleCount = 0;    
+    public static int cycleCount = 0;
 
     const string HEADER = "CONWAY'S GAME OF LIFE";
     public const string fillingDead = ".";
@@ -54,23 +44,22 @@ public class Program
         Line();
 
         //TESTING
-        //PrintArray(Storage.initialX);
-        //PrintArray(Storage.initialY);
+
 
         //START 
         ReadyToStart();
 
         //UPDATE BUFFER
-        currentGrid = UpdateGrid();
-        //Console.WriteLine("This is the current grid");
-        //Print2DString(currentGrid);
-        //Console.WriteLine("This is the future grid");
-        //Print2DString(futureGrid);
-        //Console.ReadKey();
+        string generationsQuery = "How many generations do you want to simulate?";
+        string generationsQueryFail = "can't fail - not true";
+        int gen = GetNumberFromUser(generationsQuery, generationsQueryFail, 30);
 
-
-
-
+        for (int i = 0; i < gen; i++)
+        {            
+            Console.WriteLine($"Generation {i}");
+            Line();
+            GameState.OneGeneration();
+        }
     }
 
     //CORE MECHANICS
@@ -93,7 +82,7 @@ public class Program
             else
             {
                 arr[x - 1, y - 1] = fillingAlive;
-            }            
+            }
         }
     }
     static public void Fill(string[,] arr, string filling)
@@ -106,7 +95,7 @@ public class Program
                 arr[i, j] = filling;
             }
         }
-    }    
+    }
     static public string[,] UpdateGrid()
     {
         bool cellAlive = false;
@@ -120,7 +109,7 @@ public class Program
                 int y = j;
 
                 int neighborCount = Neighbors.GetNeighborCountCell(currentGrid, i, j);
-                cellAlive = Neighbors.LiveOrDieLogic(neighborCount, currentGrid, i, j);
+                cellAlive = Logic.LiveOrDieLogic(neighborCount, currentGrid, i, j);
 
                 if (cellAlive)
                 {
@@ -128,16 +117,6 @@ public class Program
                 }
             }
         }
-        ////THIS BAD
-        //currentGrid = futureGrid;
-
-        //This is just for testing
-        Console.WriteLine("This is the current grid");
-        Print2DString(currentGrid);
-        Console.WriteLine("This is the future grid");
-        Print2DString(futureGrid);
-        Console.ReadKey();
-
 
         //INSTEAD
         Array.Copy(futureGrid, currentGrid, futureGrid.Length);
@@ -156,7 +135,7 @@ public class Program
         Console.Clear();
         Console.WriteLine(HEADER);
         Print2DString(grid);
-    }    
+    }
     static public void IncrementCycleCount()
     {
         //SUS
@@ -283,7 +262,6 @@ public class Program
 
             msg += failPrompt;
         }
-
         return number;
     }
     static public int GetXPos(int cellNo)
@@ -325,6 +303,6 @@ public class Program
             }
         }
         return yPos;
-    }    
+    }
 }
 
