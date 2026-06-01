@@ -9,19 +9,18 @@
 //start prompt
 //apply logic
 
-
 //rule logic trouble shoot
 //grib update toggle
 
 public class Program
 {
-    public static string[,] grid = new string[30, 120];
-    public static string[,] bufferGrid = new string[30, 120];
-    public static string[,] bufferGrid2 = new string[30, 120];
+
+    //these are 0-29 and 0-119
+    public static string[,] grid = new string[30, 120]; 
     public static string[,] currentGrid = new string[30, 120];
     public static string[,] futureGrid = new string[30, 120];
 
-    public static int cycleCount = 0;
+    public static int cycleCount = 0;    
 
     const string HEADER = "CONWAY'S GAME OF LIFE";
     public const string fillingDead = ".";
@@ -38,8 +37,6 @@ public class Program
         //FILL GRID W DEAD CELLS
         Fill(grid, fillingDead);
         Fill(currentGrid, fillingDead);
-        Fill(bufferGrid, fillingDead);
-        Fill(bufferGrid2, fillingDead);
 
         //PROMPT FOR CELL #
         int noOfCells = PromptForCellNumber();
@@ -54,22 +51,26 @@ public class Program
 
         //PRINT GRID
         Print2DString(currentGrid);
-        Print2DString(grid);
         Line();
 
         //TESTING
-        PrintArray(Storage.initialX);
-        PrintArray(Storage.initialY);
+        //PrintArray(Storage.initialX);
+        //PrintArray(Storage.initialY);
 
         //START 
         ReadyToStart();
 
         //UPDATE BUFFER
-        UpdateGrid();
-        Print2DString(currentGrid);
-        Console.ReadKey();
-        UpdateGrid();
-        Print2DString(currentGrid);
+        currentGrid = UpdateGrid();
+        //Console.WriteLine("This is the current grid");
+        //Print2DString(currentGrid);
+        //Console.WriteLine("This is the future grid");
+        //Print2DString(futureGrid);
+        //Console.ReadKey();
+
+
+
+
     }
 
     //CORE MECHANICS
@@ -97,6 +98,7 @@ public class Program
     }
     static public void Fill(string[,] arr, string filling)
     {
+        //GetLength returns the number of elements
         for (int i = 0; i < arr.GetLength(0); i++)
         {
             for (int j = 0; j < arr.GetLength(1); j++)
@@ -105,9 +107,9 @@ public class Program
             }
         }
     }    
-    static public void UpdateGrid()
+    static public string[,] UpdateGrid()
     {
-        bool cellAlive = false;      
+        bool cellAlive = false;
         Fill(futureGrid, fillingDead);
 
         for (int i = 0; i < currentGrid.GetLength(0); i++)
@@ -118,21 +120,30 @@ public class Program
                 int y = j;
 
                 int neighborCount = Neighbors.GetNeighborCountCell(currentGrid, i, j);
-                cellAlive = Neighbors.LiveOrDieLogic(neighborCount);
+                cellAlive = Neighbors.LiveOrDieLogic(neighborCount, currentGrid, i, j);
 
                 if (cellAlive)
                 {
                     futureGrid[i, j] = fillingAlive;
                 }
-                else
-                {
-                    futureGrid[i, j] = fillingDead;
-                }
             }
         }
-        currentGrid = futureGrid;
-    }    
- 
+        ////THIS BAD
+        //currentGrid = futureGrid;
+
+        //This is just for testing
+        Console.WriteLine("This is the current grid");
+        Print2DString(currentGrid);
+        Console.WriteLine("This is the future grid");
+        Print2DString(futureGrid);
+        Console.ReadKey();
+
+
+        //INSTEAD
+        Array.Copy(futureGrid, currentGrid, futureGrid.Length);
+        return currentGrid;
+    }
+
     //MECHANICAL HELPERS
     //++++++++++++++++++++++++++++++++++
     static public void AddXYToArray(int i, int x, int y)

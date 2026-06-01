@@ -1,105 +1,5 @@
 ﻿public class Neighbors
-{
-    static public int GetNeighborCountArray(string[,] array, int[] x, int[] y)
-    {
-        int neighborCount = 0;
-        int currentX = 0;
-        int currentY = 0;
-
-        int numberOfCells = x.Length;
-
-        for (int i = 0; i < numberOfCells; i++)
-        {
-            neighborCount = 0;
-
-            bool nSkip = false;
-            bool neSkip = false;
-            bool eSkip = false;
-            bool seSkip = false;
-            bool sSkip = false;
-            bool swSkip = false;
-            bool wSkip = false;
-            bool nwSkip = false;
-
-            currentX = x[i];
-            currentY = y[i];
-
-            if (currentX == 1)
-            {
-                nwSkip = true;
-                nSkip = true;
-                neSkip = true;
-            }
-            if (currentX == 30)
-            {
-                swSkip = true;
-                sSkip = true;
-                swSkip = true;
-            }
-            if (currentY == 1)
-            {
-                swSkip = true;
-                wSkip = true;
-                nwSkip = true;
-            }
-            if (currentY == 120)
-            {
-                seSkip = true;
-                nSkip = true;
-                neSkip = true;
-            }
-
-            //North
-            if (array[currentX - 1, currentY] == "O" && nSkip == false)
-            {
-                neighborCount++;
-            }
-
-            //NorthWest
-            if (array[currentX - 1, currentY - 1] == "O" && nwSkip == false)
-            {
-                neighborCount++;
-            }
-
-            //West
-            if (array[currentX, currentY - 1] == "O" && wSkip == false)
-            {
-                neighborCount++;
-            }
-
-            //SouthWest
-            if (array[currentX + 1, currentY - 1] == "O" && swSkip == false)
-            {
-                neighborCount++;
-            }
-
-            //South
-            if (array[currentX + 1, currentY] == "O" && sSkip == false)
-            {
-                neighborCount++;
-            }
-
-            //SouthEast
-            if (array[currentX + 1, currentY + 1] == "O" && seSkip == false)
-            {
-                neighborCount++;
-            }
-
-            //East
-            if (array[currentX, currentY + 1] == "O" && eSkip == false)
-            {
-                neighborCount++;
-            }
-
-            //NorthEast
-            if (array[currentX - 1, currentY + 1] == "O" && neSkip == false)
-            {
-                neighborCount++;
-            }   
-        }
-        return neighborCount;
-
-    }
+{    
     static public int GetNeighborCountCell(string[,] array, int x, int y)
     {
         int neighborCount = 0;
@@ -116,7 +16,7 @@
         bool nwSkip = false;
 
 
-        if (currentX <= 1)
+        if (currentX <= 0)
         {
             nwSkip = true;
             nSkip = true;
@@ -128,7 +28,7 @@
             sSkip = true;
             seSkip = true;
         }
-        if (currentY <= 1)
+        if (currentY <= 0)
         {
             swSkip = true;
             wSkip = true;
@@ -217,9 +117,9 @@
     //Get neighbor cell count for 1st cell in tracking array
     //apply liveordie logic
     //update bufferGrid array
-    public static bool LiveOrDieLogic(int neighborCount)
+    public static bool LiveOrDieLogic(int neighborCount, string[,] arr, int x, int y)
     {
-        bool cellAlive = true;
+        bool cellAlive = false;
 
         //UNDERPOP
         if (neighborCount < 2)
@@ -227,25 +127,20 @@
             cellAlive = false;
         }
 
-        //LIFE
-        else if (neighborCount == 2 || neighborCount == 3)
+        //LIFE //LIVE ON
+        if (arr[x,y] == Program.fillingAlive && (neighborCount == 2 || neighborCount == 3))
         {
             cellAlive = true;
         }
 
         //OVERPOP
-        else if (neighborCount > 3)
+        if (neighborCount > 3)
         {
             cellAlive = false;
         }
 
         //REPRO
-        else if (neighborCount == 3)
-        {
-            cellAlive = true;
-        }
-
-        else
+        if (neighborCount == 3)
         {
             cellAlive = true;
         }

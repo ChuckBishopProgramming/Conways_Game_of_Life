@@ -6,6 +6,7 @@
 
     public static void CreateInitialArrays(int numberOfCells)
     {
+        //This is 0-numberOfCells-1
         initialX = new int[numberOfCells];
         initialY = new int[numberOfCells];
     }
