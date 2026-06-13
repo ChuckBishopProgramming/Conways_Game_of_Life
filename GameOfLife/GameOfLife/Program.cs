@@ -1,7 +1,7 @@
 ﻿//   Notes: Working MVP
-//          Display grid not wired
-//          Console clear between generations
-//          Add autoPlay, pause, quit
+//          
+//          
+//          
 
 public class Program
 {
@@ -27,6 +27,10 @@ public class Program
         //FILL GRID W DEAD CELLS
         Fill(grid, fillingDead);
         Fill(currentGrid, fillingDead);
+
+        //GIVE OPTION FOR PREMADE 
+        //Select premade shape
+        //Enter your own cells
 
         //PROMPT FOR CELL #
         int noOfCells = PromptForCellNumber();
@@ -54,12 +58,26 @@ public class Program
         string generationsQueryFail = "can't fail - not true";
         int gen = GetNumberFromUser(generationsQuery, generationsQueryFail, 30);
 
-        for (int i = 0; i < gen; i++)
-        {            
-            Console.WriteLine($"Generation {i}");
-            Line();
-            GameState.OneGeneration();
+        if (gen < 0)
+        {
+            Console.WriteLine($"negative number not allowed, setting to 1 generation");
+            gen = 1;
         }
+
+        Console.WriteLine($"(M)anual or (A)uto?");
+        string manualAuto = Console.ReadLine();
+        
+        if (manualAuto.Trim().ToUpper() == "M")
+        {
+            ManualAdvance(gen);
+        }
+        else if (manualAuto.Trim().ToUpper() == "A")
+        {
+            AutoAdvance(gen);
+        }
+              
+
+
     }
 
     //CORE MECHANICS
@@ -121,6 +139,26 @@ public class Program
         //INSTEAD
         Array.Copy(futureGrid, currentGrid, futureGrid.Length);
         return currentGrid;
+    }
+    static public void ManualAdvance(int generations)
+    {
+        for (int i = 0; i < generations; i++)
+        {            
+            Console.Clear();
+            Console.WriteLine($"Generation {i}");
+            Line();
+            GameState.OneGenerationManual();
+        }
+    }
+    static public void AutoAdvance(int generations)
+    {
+        for (int i = 0; i < generations; i++)
+        {
+            Console.Clear();
+            Console.WriteLine($"Generation {i}");
+            Line();
+            GameState.OneGenerationAuto();
+        }
     }
 
     //MECHANICAL HELPERS
