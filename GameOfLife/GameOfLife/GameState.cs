@@ -1,7 +1,5 @@
 ﻿public class GameState
-{
-    private bool _running = false;
-    private bool _paused = false;
+{   
 
     // PREP
     //lots of prompts

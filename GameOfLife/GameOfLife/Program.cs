@@ -1,14 +1,92 @@
 ﻿//   Notes: Working MVP
-//          
-//          
-//          
-
+//          auto loop added
+//          prompt for auto shape            
+//                
+          
 public class Program
 {
     //these are 0-29 and 0-119
     public static string[,] grid = new string[30, 120];
     public static string[,] currentGrid = new string[30, 120];
     public static string[,] futureGrid = new string[30, 120];
+
+    //premade shapes
+
+    public readonly static int[,] p24GG = new int[72, 2]
+    {
+        { 1, 3 },
+        { 2, 3 },
+        { 2, 4 },
+        { 2, 5 },
+        { 2, 19 },
+        { 2, 20 },
+        { 3, 6 },
+        { 3, 16 },
+        { 3, 17 },
+        { 3, 20 },
+        { 4, 5 },
+        { 4, 6 },
+        { 4, 15 },
+        { 4, 17 },
+        { 4, 19 },
+        { 5, 17 },
+        { 5, 19 },
+        { 5, 20 },
+        { 6, 19 },
+        { 7, 8 },
+        { 7, 13 },
+        { 7, 16 },
+        { 7, 19 },
+        { 8, 8 },
+        { 8, 14 },
+        { 8, 16 },
+        { 8, 18 },
+        { 8, 19 },
+        { 8, 21 },
+        { 9, 6 },
+        { 9, 10 },
+        { 9, 15 },
+        { 9, 16 },
+        { 9, 20 },
+        { 9, 21 },
+        { 10, 6 },
+        { 10, 8 },
+        { 10, 9 },
+        { 10, 17 },
+        { 10, 18 },
+        { 11, 17 },
+        { 12, 8 },
+        { 12, 19 },
+        { 13, 7 },
+        { 13, 8 },
+        { 13, 13 },
+        { 13, 14 },
+        { 13, 18 },
+        { 13, 19 },
+        { 14, 6 },
+        { 14, 7 },
+        { 14, 9 },
+        { 14, 13 },
+        { 14, 15 },
+        { 15, 7 },
+        { 15, 8 },
+        { 15, 9 },
+        { 15, 15 },
+        { 16, 8 },
+        { 16, 15 },
+        { 16, 16 },
+        { 17, 4 },
+        { 18, 2 },
+        { 18, 5 },
+        { 19, 2 },
+        { 19, 5 },
+        { 20, 3 },
+        { 21, 12 },
+        { 21, 14 },
+        { 22, 13 },
+        { 22, 14 },
+        { 23, 13 }
+    };
 
     public static int cycleCount = 0;
 
@@ -28,20 +106,42 @@ public class Program
         Fill(grid, fillingDead);
         Fill(currentGrid, fillingDead);
 
+
         //GIVE OPTION FOR PREMADE 
         //Select premade shape
         //Enter your own cells
+        string userResponse = PromptPremade();           
 
-        //PROMPT FOR CELL #
-        int noOfCells = PromptForCellNumber();
-        Line();
 
-        //CREATE INITIAL ARRAY
-        Storage.CreateInitialArrays(noOfCells);
+        if (userResponse.Trim().ToUpper() == "Y")
+        {
 
-        //PLACE CELLS & FILL ARRAYS
-        PromptAndPlaceCells(noOfCells, currentGrid);
-        Line();
+            int noOfCellsPeriod24 = 72;
+
+            //CREATE INITIAL ARRAY
+            Storage.CreateInitialArrays(noOfCellsPeriod24);
+
+            //PLACE SHAPE AND FILL ARRAY
+            PlacePeriod24GliderGun(p24GG, currentGrid);
+
+        } 
+        else if (userResponse.Trim().ToUpper() == "N")
+        {
+            //PROMPT FOR CELL #
+            int noOfCells = PromptForCellNumber();
+            Line();
+
+            //CREATE INITIAL ARRAY
+            Storage.CreateInitialArrays(noOfCells);
+
+            //PLACE CELLS & FILL ARRAYS
+            PromptAndPlaceCells(noOfCells, currentGrid);
+            Line();
+        }
+        else
+        {
+            Console.WriteLine($"Please enter Y or N");
+        }               
 
         //PRINT GRID
         Print2DString(currentGrid);
@@ -52,31 +152,20 @@ public class Program
 
         //START 
         ReadyToStart();
+        Console.Clear();
 
         //UPDATE BUFFER
-        string generationsQuery = "How many generations do you want to simulate?";
-        string generationsQueryFail = "can't fail - not true";
-        int gen = GetNumberFromUser(generationsQuery, generationsQueryFail, 30);
 
-        if (gen < 0)
-        {
-            Console.WriteLine($"negative number not allowed, setting to 1 generation");
-            gen = 1;
-        }
+        //AUTO OR MANUAL TURNS
 
-        Console.WriteLine($"(M)anual or (A)uto?");
-        string manualAuto = Console.ReadLine();
-        
-        if (manualAuto.Trim().ToUpper() == "M")
+        if (PromptAutoMan().Trim().ToUpper() == "M")
         {
-            ManualAdvance(gen);
+            ManualAdvance(PromptGenerations());
         }
-        else if (manualAuto.Trim().ToUpper() == "A")
+        else if (PromptAutoMan().Trim().ToUpper() == "A")
         {
-            AutoAdvance(gen);
-        }
-              
-
+            AutoAdvance(PromptGenerations());
+        }            
 
     }
 
@@ -342,5 +431,59 @@ public class Program
         }
         return yPos;
     }
+    static public string PromptAutoMan()
+    {        
+        Console.WriteLine($"(M)anual or (A)uto?");
+        string response = Console.ReadLine();
+        return response;
+    }
+    static public int PromptGenerations()
+    {        
+        string generationsQuery = "How many generations do you want to simulate?";
+        string generationsQueryFail = "can't fail - not true";
+        int gen = GetNumberFromUser(generationsQuery, generationsQueryFail, 30);
+
+        if (gen < 0)
+        {
+            Console.WriteLine($"negative number not allowed, setting to 1 generation");
+            gen = 1;
+        }
+        return gen;
+    }
+    static public string PromptPremade()
+    {
+        Console.WriteLine($"Do you want to use to a premade shape? (Y/N)");
+        string response = Console.ReadLine();
+
+        return response;
+    }
+
+    //SHAPES 
+    //++++++++++++++++++++++++++++++++++
+    static public void PlacePeriod24GliderGun(int[,] intArr, string[,] display)
+    {
+        //72 cells
+        //length = total items
+        //GetLength(//dimension number) = specific array's total items
+        for (int i = 0; i < intArr.GetLength(0); i++)
+        {
+            int x = intArr[i, 0];
+            int y = intArr[i, 1];
+
+            //fill initial arrays
+            AddXYToArray(i, x, y);
+
+            if (display[x - 1, y - 1] == fillingAlive)
+            {
+                CellFilled();
+                i--;
+            }
+            else
+            {
+                display[x - 1, y - 1] = fillingAlive;
+            }
+        }
+    }
+
 }
 
