@@ -12,10 +12,10 @@ public class Program
     public static string[,] currentGrid = new string[30, 120];
     public static string[,] futureGrid = new string[30, 120];
 
-    public static string[,] bufferGrid = new string[30, 120];
-    public static string[,] displayGrid = new string[30, 120];
+    //New display attempt
 
-    //premade shapes 
+    public static string[,] bufferGrid = new string[30, 120];
+    public static string[,] displayGrid = new string[30, 120];    
 
     public static int cycleCount = 0;
 
@@ -58,7 +58,6 @@ public class Program
         //if current grid cell is different == update cell in future grid
 
 
-
         //AUTO OR MANUAL TURNS
         ManualAutoSplit();         
     }
@@ -94,6 +93,43 @@ public class Program
             for (int j = 0; j < arr.GetLength(1); j++)
             {
                 arr[i, j] = filling;
+            }
+        }
+    }
+
+    static public void UpdateDisplay()
+    {       
+        for (int i = 0; i < displayGrid.GetLength(0); i++)
+        {
+            for (int j = 0; j < displayGrid.GetLength(1); j++)
+            {
+                if (!(displayGrid[i, j] == bufferGrid[i, j]))
+                {                  
+                    displayGrid[i, j] = bufferGrid[i, j];
+                }                
+            }
+        }
+    }
+    static public void UpdateBuffer()
+    {
+        bool cellAlive = false;
+
+        Fill(bufferGrid, fillingDead);
+
+        for (int i = 0; i < bufferGrid.GetLength(0); i++)
+        {
+            for (int j = 0; j < bufferGrid.GetLength(1); j++)
+            {                
+                int x = i;
+                int y = j;
+
+                int neighborCount = Neighbors.GetNeighborCountCell(bufferGrid, i, j);
+                cellAlive = Logic.LiveOrDieLogic(neighborCount, bufferGrid, i, j);
+
+                if (cellAlive)
+                {
+                    futureGrid[i, j] = fillingAlive;
+                }
             }
         }
     }
@@ -224,6 +260,10 @@ public class Program
             Console.Write("\n");
         }
     }
+    static public void Print2DStringB()
+    {
+
+    }
     static public void Print2DInt(int[,] grid)
     {
         for (int i = 0; i < grid.GetLength(0); i++)
@@ -241,11 +281,7 @@ public class Program
         {
             Console.WriteLine(number);
         }
-    }
-    static public void UpdateDisplay()
-    {
-
-    }
+    }   
 
     //FORMATTING
     //++++++++++++++++++++++++++++++++++

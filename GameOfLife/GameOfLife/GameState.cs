@@ -10,8 +10,12 @@ public class GameState
 
         Console.Clear();
         Program.currentGrid = Program.UpdateGrid();
+        //Program.UpdateBuffer();
+        //Program.UpdateDisplay();
+
         Program.Print2DString(Program.currentGrid);
         AnsiConsole.MarkupLine($"[green]Generation {i + offByOneCorrector}[/]");
+
         Program.PromptGenAdvance();
         Console.ReadKey();
     }
@@ -21,9 +25,13 @@ public class GameState
 
         Console.Clear();
         Program.currentGrid = Program.UpdateGrid();
+        //for buffer split
+        //Program.UpdateBuffer();
+        //Program.UpdateDisplay();
+
         Program.Print2DString(Program.currentGrid);
         AnsiConsole.MarkupLine($"[green]Generation {i + offByOneCorrector}[/]");
-        //Program.Line();
+       
         Thread.Sleep(1500);
     }
 }
