@@ -1,8 +1,10 @@
-﻿//   Notes: Working MVP
+﻿using Spectre.Console;
+
+//   Notes: Working MVP
 //          auto loop added
-//          prompt for auto shape            
-//                
-          
+//          autoshape complete
+//          adding formatting and consol
+
 public class Program
 {
     //these are 0-29 and 0-119
@@ -11,7 +13,6 @@ public class Program
     public static string[,] futureGrid = new string[30, 120];
 
     //premade shapes
-
     public readonly static int[,] p24GG = new int[72, 2]
     {
         { 1, 3 },
@@ -98,6 +99,17 @@ public class Program
 
     static void Main(string[] args)
     {
+        //__________________________________________________________________________________________________________
+        //SPECTRE CONSOLE LAB
+        //string userSelect = AnsiConsole.Prompt(
+        //new SelectionPrompt<string>()
+        //.Title("[green]PROMPT[/]:")
+        //.AddChoices("Option 1", "Option 2", "Option 3"));
+
+        //AnsiConsole.MarkupLine($"User select is: [gold1]{userSelect}[/]");
+
+
+        ////_________________________________________________________________________________________________
         //GREETING
         Console.WriteLine("WELCOME, It's Alive!!!!");
         Line();
@@ -108,24 +120,25 @@ public class Program
 
 
         //GIVE OPTION FOR PREMADE 
-        //Select premade shape
-        //Enter your own cells
+        
         string userResponse = PromptPremade();           
-
-
-        if (userResponse.Trim().ToUpper() == "Y")
+        if (userResponse.Trim().ToUpper() == "YES")
         {
+            string userSelect = PromptPremadeSelect();
 
-            int noOfCellsPeriod24 = 72;
+            if (userSelect.Trim().ToUpper() == "PERIOD 24 GLIDER GUN")
+            {
+                int noOfCellsPeriod24 = 72;
 
-            //CREATE INITIAL ARRAY
-            Storage.CreateInitialArrays(noOfCellsPeriod24);
+                //CREATE INITIAL ARRAY
+                Storage.CreateInitialArrays(noOfCellsPeriod24);
 
-            //PLACE SHAPE AND FILL ARRAY
-            PlacePeriod24GliderGun(p24GG, currentGrid);
+                //PLACE SHAPE AND FILL ARRAY
+                PlacePeriod24GliderGun(p24GG, currentGrid);
+            }          
 
         } 
-        else if (userResponse.Trim().ToUpper() == "N")
+        else if (userResponse.Trim().ToUpper() == "NO")
         {
             //PROMPT FOR CELL #
             int noOfCells = PromptForCellNumber();
@@ -141,9 +154,11 @@ public class Program
         else
         {
             Console.WriteLine($"Please enter Y or N");
-        }               
+        }
 
         //PRINT GRID
+        Console.Clear();
+        Line();
         Print2DString(currentGrid);
         Line();
 
@@ -158,15 +173,14 @@ public class Program
 
         //AUTO OR MANUAL TURNS
 
-        if (PromptAutoMan().Trim().ToUpper() == "M")
+        if (PromptAutoMan().Trim().ToUpper() == "MANUAL")
         {
             ManualAdvance(PromptGenerations());
         }
-        else if (PromptAutoMan().Trim().ToUpper() == "A")
+        else if (PromptAutoMan().Trim().ToUpper() == "AUTOMATIC")
         {
             AutoAdvance(PromptGenerations());
-        }            
-
+        }          
     }
 
     //CORE MECHANICS
@@ -319,26 +333,29 @@ public class Program
     //PROMPT
     //++++++++++++++++++++++++++++++++++
     static public void ReadyToStart()
-    {
-        //Sketchy
+    {        
+        string userSelect = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+            .Title("Are you ready to start?")
+            .AddChoices("Start", "Quit")
+            );
+
         bool start = false;
-        Console.WriteLine("Press Enter to Start or Escape to exit");
 
         while (!start)
-        {
-            ConsoleKeyInfo keyPress = Console.ReadKey();
-            if (keyPress.Key == ConsoleKey.Enter)
+        {            
+            if (userSelect.Trim().ToUpper() == "START")
             {
                 //start stuff
                 start = true;
             }
             else
             {
-                if (keyPress.Key == ConsoleKey.Escape)
+                if (userSelect.Trim().ToUpper() == "QUIT")
                 {
                     //start stuff
                     start = false;
-                    break;
+                    Environment.Exit(0);
                 }
             }
         }
@@ -356,7 +373,7 @@ public class Program
 
         while (!userInputValidNumber)
         {
-            Console.Write("How many cells do you want to place? ");
+            AnsiConsole.MarkupLine("[green]How many cells do you want to place?[/]");
             string userInput = Console.ReadLine();
 
             userInputValidNumber = int.TryParse(userInput, out number);
@@ -381,7 +398,7 @@ public class Program
 
             //ConsoleReset();
 
-            Console.Write(msg);
+            AnsiConsole.MarkupLine($"[green]{msg}[/]");
 
             string userInput = Console.ReadLine();
 
@@ -432,10 +449,12 @@ public class Program
         return yPos;
     }
     static public string PromptAutoMan()
-    {        
-        Console.WriteLine($"(M)anual or (A)uto?");
-        string response = Console.ReadLine();
-        return response;
+    {
+        string userSelect = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+            .Title("[green]Please select advancement type[/]")
+            .AddChoices("Automatic", "Manual"));
+        return userSelect;
     }
     static public int PromptGenerations()
     {        
@@ -445,17 +464,28 @@ public class Program
 
         if (gen < 0)
         {
-            Console.WriteLine($"negative number not allowed, setting to 1 generation");
+            AnsiConsole.MarkupLine($"negative number not allowed, setting to 1 generation");
             gen = 1;
         }
         return gen;
     }
     static public string PromptPremade()
     {
-        Console.WriteLine($"Do you want to use to a premade shape? (Y/N)");
-        string response = Console.ReadLine();
+        string userSelect = AnsiConsole.Prompt(
+        new SelectionPrompt<string>()
+        .Title("[green]Do you want to use to a premade shape?[/]:")
+        .AddChoices("Yes", "No"));
 
-        return response;
+        return userSelect;
+    }
+    static public string PromptPremadeSelect()
+    {
+        string userSelect = AnsiConsole.Prompt(
+        new SelectionPrompt<string>()
+        .Title("[green]Which pre-made shape would you like to place?[/]:")
+        .AddChoices("Period 24 glider gun"));
+
+        return userSelect;
     }
 
     //SHAPES 
@@ -484,6 +514,7 @@ public class Program
             }
         }
     }
+
 
 }
 
