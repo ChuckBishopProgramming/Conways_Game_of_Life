@@ -118,43 +118,8 @@ public class Program
         Fill(grid, fillingDead);
         Fill(currentGrid, fillingDead);
 
-
         //GIVE OPTION FOR PREMADE 
-        
-        string userResponse = PromptPremade();           
-        if (userResponse.Trim().ToUpper() == "YES")
-        {
-            string userSelect = PromptPremadeSelect();
-
-            if (userSelect.Trim().ToUpper() == "PERIOD 24 GLIDER GUN")
-            {
-                int noOfCellsPeriod24 = 72;
-
-                //CREATE INITIAL ARRAY
-                Storage.CreateInitialArrays(noOfCellsPeriod24);
-
-                //PLACE SHAPE AND FILL ARRAY
-                PlacePeriod24GliderGun(p24GG, currentGrid);
-            }          
-
-        } 
-        else if (userResponse.Trim().ToUpper() == "NO")
-        {
-            //PROMPT FOR CELL #
-            int noOfCells = PromptForCellNumber();
-            Line();
-
-            //CREATE INITIAL ARRAY
-            Storage.CreateInitialArrays(noOfCells);
-
-            //PLACE CELLS & FILL ARRAYS
-            PromptAndPlaceCells(noOfCells, currentGrid);
-            Line();
-        }
-        else
-        {
-            Console.WriteLine($"Please enter Y or N");
-        }
+        PremadeSelector();
 
         //PRINT GRID
         Console.Clear();
@@ -172,15 +137,7 @@ public class Program
         //UPDATE BUFFER
 
         //AUTO OR MANUAL TURNS
-
-        if (PromptAutoMan().Trim().ToUpper() == "MANUAL")
-        {
-            ManualAdvance(PromptGenerations());
-        }
-        else if (PromptAutoMan().Trim().ToUpper() == "AUTOMATIC")
-        {
-            AutoAdvance(PromptGenerations());
-        }          
+        ManualAutoSplit();         
     }
 
     //CORE MECHANICS
@@ -248,9 +205,7 @@ public class Program
         for (int i = 0; i < generations; i++)
         {            
             Console.Clear();
-            Console.WriteLine($"Generation {i}");
-            Line();
-            GameState.OneGenerationManual();
+            GameState.OneGenerationManual(i);
         }
     }
     static public void AutoAdvance(int generations)
@@ -258,9 +213,58 @@ public class Program
         for (int i = 0; i < generations; i++)
         {
             Console.Clear();
-            Console.WriteLine($"Generation {i}");
+            GameState.OneGenerationAuto(i);
+        }
+    }
+    static public void ManualAutoSplit()
+    {
+        string userSelect = PromptAutoMan();
+
+
+        if (userSelect.Trim().ToUpper() == "MANUAL")
+        {
+            ManualAdvance(PromptGenerations());
+        }
+        else if (userSelect.Trim().ToUpper() == "AUTOMATIC")
+        {
+            AutoAdvance(PromptGenerations());
+        }
+    }
+    static public void PremadeSelector()
+    {
+        string userResponse = PromptPremade();
+        if (userResponse.Trim().ToUpper() == "YES")
+        {
+            string userSelect = PromptPremadeSelect();
+
+            if (userSelect.Trim().ToUpper() == "PERIOD 24 GLIDER GUN")
+            {
+                int noOfCellsPeriod24 = 72;
+
+                //CREATE INITIAL ARRAY
+                Storage.CreateInitialArrays(noOfCellsPeriod24);
+
+                //PLACE SHAPE AND FILL ARRAY
+                PlacePeriod24GliderGun(p24GG, currentGrid);
+            }
+
+        }
+        else if (userResponse.Trim().ToUpper() == "NO")
+        {
+            //PROMPT FOR CELL #
+            int noOfCells = PromptForCellNumber();
             Line();
-            GameState.OneGenerationAuto();
+
+            //CREATE INITIAL ARRAY
+            Storage.CreateInitialArrays(noOfCells);
+
+            //PLACE CELLS & FILL ARRAYS
+            PromptAndPlaceCells(noOfCells, currentGrid);
+            Line();
+        }
+        else
+        {
+            Console.WriteLine($"Please enter Y or N");
         }
     }
 
@@ -486,6 +490,10 @@ public class Program
         .AddChoices("Period 24 glider gun"));
 
         return userSelect;
+    }
+    static public void PromptGenAdvance()
+    {
+        AnsiConsole.MarkupLine("[green]Press any button for the next generation[/]");
     }
 
     //SHAPES 
