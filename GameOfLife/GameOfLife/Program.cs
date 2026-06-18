@@ -1,9 +1,9 @@
 ﻿using Spectre.Console;
 
 //   Notes: Working MVP
-//          auto loop added
-//          autoshape complete
-//          adding formatting and consol
+//          to add: infinite loop with controls // start stop restart quit
+//          
+//         
 
 public class Program
 {
@@ -12,82 +12,10 @@ public class Program
     public static string[,] currentGrid = new string[30, 120];
     public static string[,] futureGrid = new string[30, 120];
 
-    //premade shapes
-    public readonly static int[,] p24GG = new int[72, 2]
-    {
-        { 1, 3 },
-        { 2, 3 },
-        { 2, 4 },
-        { 2, 5 },
-        { 2, 19 },
-        { 2, 20 },
-        { 3, 6 },
-        { 3, 16 },
-        { 3, 17 },
-        { 3, 20 },
-        { 4, 5 },
-        { 4, 6 },
-        { 4, 15 },
-        { 4, 17 },
-        { 4, 19 },
-        { 5, 17 },
-        { 5, 19 },
-        { 5, 20 },
-        { 6, 19 },
-        { 7, 8 },
-        { 7, 13 },
-        { 7, 16 },
-        { 7, 19 },
-        { 8, 8 },
-        { 8, 14 },
-        { 8, 16 },
-        { 8, 18 },
-        { 8, 19 },
-        { 8, 21 },
-        { 9, 6 },
-        { 9, 10 },
-        { 9, 15 },
-        { 9, 16 },
-        { 9, 20 },
-        { 9, 21 },
-        { 10, 6 },
-        { 10, 8 },
-        { 10, 9 },
-        { 10, 17 },
-        { 10, 18 },
-        { 11, 17 },
-        { 12, 8 },
-        { 12, 19 },
-        { 13, 7 },
-        { 13, 8 },
-        { 13, 13 },
-        { 13, 14 },
-        { 13, 18 },
-        { 13, 19 },
-        { 14, 6 },
-        { 14, 7 },
-        { 14, 9 },
-        { 14, 13 },
-        { 14, 15 },
-        { 15, 7 },
-        { 15, 8 },
-        { 15, 9 },
-        { 15, 15 },
-        { 16, 8 },
-        { 16, 15 },
-        { 16, 16 },
-        { 17, 4 },
-        { 18, 2 },
-        { 18, 5 },
-        { 19, 2 },
-        { 19, 5 },
-        { 20, 3 },
-        { 21, 12 },
-        { 21, 14 },
-        { 22, 13 },
-        { 22, 14 },
-        { 23, 13 }
-    };
+    public static string[,] bufferGrid = new string[30, 120];
+    public static string[,] displayGrid = new string[30, 120];
+
+    //premade shapes 
 
     public static int cycleCount = 0;
 
@@ -99,16 +27,6 @@ public class Program
 
     static void Main(string[] args)
     {
-        //__________________________________________________________________________________________________________
-        //SPECTRE CONSOLE LAB
-        //string userSelect = AnsiConsole.Prompt(
-        //new SelectionPrompt<string>()
-        //.Title("[green]PROMPT[/]:")
-        //.AddChoices("Option 1", "Option 2", "Option 3"));
-
-        //AnsiConsole.MarkupLine($"User select is: [gold1]{userSelect}[/]");
-
-
         ////_________________________________________________________________________________________________
         //GREETING
         Console.WriteLine("WELCOME, It's Alive!!!!");
@@ -129,12 +47,17 @@ public class Program
 
         //TESTING
 
-
         //START 
         ReadyToStart();
         Console.Clear();
 
         //UPDATE BUFFER
+        //rename to buffer and display
+        //compare current grid with future grid
+        //if current grid cell is same == leave alone
+        //if current grid cell is different == update cell in future grid
+
+
 
         //AUTO OR MANUAL TURNS
         ManualAutoSplit();         
@@ -177,6 +100,7 @@ public class Program
     static public string[,] UpdateGrid()
     {
         bool cellAlive = false;
+
         Fill(futureGrid, fillingDead);
 
         for (int i = 0; i < currentGrid.GetLength(0); i++)
@@ -245,7 +169,7 @@ public class Program
                 Storage.CreateInitialArrays(noOfCellsPeriod24);
 
                 //PLACE SHAPE AND FILL ARRAY
-                PlacePeriod24GliderGun(p24GG, currentGrid);
+                PlacePeriod24GliderGun(Shapes.p24GG, currentGrid);
             }
 
         }
@@ -522,7 +446,5 @@ public class Program
             }
         }
     }
-
-
 }
 
